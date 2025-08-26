@@ -1,6 +1,26 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Must extend an AppCompat/M3 theme to satisfy AppCompatActivity -->
-    <style name="Theme.NOVA" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
+<resources>
+    <style name="Theme.NOVA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/nova_primary</item>
+        <item name="colorOnPrimary">@color/nova_on_primary</item>
+        <item name="colorSecondary">@color/nova_secondary</item>
+
+        <item name="android:statusBarColor">@color/nova_primary</item>
+        <item name="android:navigationBarColor">@color/nova_surface</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Default widget theming -->
+        <item name="materialButtonStyle">@style/Nova.Button</item>
+        <item name="materialCardViewStyle">@style/Nova.Card</item>
+    </style>
+
+    <style name="Nova.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="Nova.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardUseCompatPadding">true</item>
     </style>
 </resources>

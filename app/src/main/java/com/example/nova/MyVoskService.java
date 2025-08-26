@@ -31,7 +31,16 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
 
     private final AtomicBoolean ready = new AtomicBoolean(false);
     private final AtomicBoolean closing = new AtomicBoolean(false);
+    private final AtomicBoolean listening = new AtomicBoolean(false);
 
+    // Silence watchdog state
+    private final Handler watchdog = new Handler(Looper.getMainLooper());
+    private static final long SILENCE_TIMEOUT_MS = 900;
+    private volatile String lastPartial = "";
+    private volatile long lastPartialTimestamp = 0L;
+    private volatile boolean finalDispatched = false;
+
+    /** Single nested listener interface (do NOT duplicate). */
     public interface Listener {
         void onPartialResult(String hypothesis);
         void onFinalResult(String result);
@@ -43,13 +52,11 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
         this.listener = listener;
         LibVosk.setLogLevel(LogLevel.INFO);
 
-        // IMPORTANT: the first arg must EXACTLY match the assets folder name
         final String assetsModelDir = "vosk-model-small-en-us-0.15";
-
         StorageService.unpack(
                 context,
                 assetsModelDir,
-                "model", // cache dir name
+                "model",
                 unpackedModel -> {
                     model = unpackedModel;
                     ready.set(true);
@@ -63,25 +70,35 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
         );
     }
 
+    /** Public: start listening (safe to call repeatedly). */
     public void startListening() {
         if (!ready.get() || model == null) {
-            // Not ready yet — avoid creating Recognizer with null model
-            Log.w(TAG, "startListening called before model is ready");
+            Log.w(TAG, "startListening before ready");
             return;
         }
-        stop(); // clean any previous session
-
+        stopInternal();
         try {
             recognizer = new Recognizer(model, 16000.0f);
             speechService = new SpeechService(recognizer, 16000.0f);
+            resetUtteranceState();
             speechService.startListening(this);
+            listening.set(true);
+            scheduleWatchdog();
         } catch (IOException e) {
             Log.e(TAG, "Error starting speech service", e);
+            listening.set(false);
             if (listener != null) main.post(() -> listener.onError(e));
         }
     }
 
-    public void stop() {
+    /** Public: stop listening, but keep model loaded. */
+    public void stopListening() {
+        stopInternal();
+        listening.set(false);
+    }
+
+    /** Internal stop (does not flip 'ready'). */
+    private void stopInternal() {
         SpeechService ss = speechService;
         if (ss != null) {
             try { ss.stop(); } catch (Throwable ignored) {}
@@ -89,14 +106,32 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
         }
         speechService = null;
         recognizer = null;
+        watchdog.removeCallbacksAndMessages(null);
+    }
+
+    public boolean isListening() { return listening.get(); }
+
+    private void resetUtteranceState() {
+        lastPartial = "";
+        lastPartialTimestamp = 0L;
+        finalDispatched = false;
+        watchdog.removeCallbacksAndMessages(null);
     }
 
     @Override public void onPartialResult(String hypothesis) {
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(hypothesis);
             String partial = (String) obj.get("partial");
-            if (partial != null && listener != null) {
-                main.post(() -> listener.onPartialResult(partial));
+            if (partial == null) return;
+
+            if (listener != null) {
+                final String show = partial;
+                main.post(() -> listener.onPartialResult(show));
+            }
+
+            if (!partial.trim().isEmpty()) {
+                lastPartial = partial.trim();
+                lastPartialTimestamp = System.currentTimeMillis();
             }
         } catch (Exception e) {
             Log.e(TAG, "Parse partial error", e);
@@ -108,13 +143,20 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
             JSONObject obj = (JSONObject) new JSONParser().parse(result);
             String text = (String) obj.get("text");
             if (text != null && !text.isEmpty() && listener != null) {
+                finalDispatched = true;
                 main.post(() -> listener.onFinalResult(text));
             }
         } catch (Exception e) {
             Log.e(TAG, "Parse final error", e);
         }
-        // Keep continuous listening
-        startListening();
+        restartListening();
+    }
+
+    private void restartListening() {
+        watchdog.removeCallbacksAndMessages(null);
+        if (listening.get()) {
+            main.postDelayed(this::startListening, 50);
+        }
     }
 
     @Override public void onResult(String hypothesis) { /* unused */ }
@@ -122,20 +164,56 @@ public class MyVoskService implements AutoCloseable, RecognitionListener {
     @Override public void onError(Exception exception) {
         Log.e(TAG, "Recognizer error", exception);
         if (listener != null) main.post(() -> listener.onError(exception));
+        restartListening();
     }
 
     @Override public void onTimeout() {
         Log.i(TAG, "Recognizer timed out.");
-        // Optionally restart
-        startListening();
+        if (!finalDispatched && lastPartial != null && !lastPartial.isEmpty() && listener != null) {
+            final String promote = lastPartial;
+            finalDispatched = true;
+            main.post(() -> listener.onFinalResult(promote));
+        }
+        restartListening();
     }
 
     @Override public void close() {
         if (closing.getAndSet(true)) return;
-        stop();
+        listening.set(false);
+        stopInternal();
         if (model != null) {
             try { model.close(); } catch (Throwable ignored) {}
             model = null;
         }
+    }
+
+    private void scheduleWatchdog() {
+        watchdog.postDelayed(new Runnable() {
+            @Override public void run() {
+                try {
+                    if (recognizer == null || speechService == null || !listening.get()) return;
+
+                    long now = System.currentTimeMillis();
+                    if (!finalDispatched
+                            && lastPartial != null
+                            && !lastPartial.isEmpty()
+                            && lastPartialTimestamp > 0
+                            && (now - lastPartialTimestamp) >= SILENCE_TIMEOUT_MS) {
+
+                        Log.d(TAG, "Silence watchdog -> promote: " + lastPartial);
+                        finalDispatched = true;
+                        if (listener != null) {
+                            final String promote = lastPartial;
+                            main.post(() -> listener.onFinalResult(promote));
+                        }
+                        restartListening();
+                        return;
+                    }
+                } catch (Throwable t) {
+                    Log.e(TAG, "watchdog loop error", t);
+                }
+                watchdog.postDelayed(this, 150);
+            }
+        }, 150);
     }
 }

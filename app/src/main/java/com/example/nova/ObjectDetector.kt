@@ -1,7 +1,6 @@
 package com.example.nova
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -38,17 +37,15 @@ class ObjectDetector(
         }
     }
 
-    fun detect(image: Bitmap) {
-        val det = objectDetector
-        if (det == null) {
+    fun detect(bitmap: android.graphics.Bitmap) {
+        val det = objectDetector ?: run {
             postError("Detector not initialized")
             return
         }
         try {
             val tensor = ImageProcessor.Builder().build()
-                .process(TensorImage.fromBitmap(image))
+                .process(TensorImage.fromBitmap(bitmap))
             val results = det.detect(tensor)
-            // ALWAYS deliver on main thread
             main.post { listener.onResults(results) }
         } catch (t: Throwable) {
             Log.e(TAG, "detect() failed", t)

@@ -1,35 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/bg_app_gradient">
 
-    <!-- This is the view that will show the camera feed -->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Top App Bar with NOVA title and menu (camera action lives in menu/main_menu.xml) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.MaterialComponents.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/nova_primary"
+        android:title="@string/app_name"
+        android:titleTextColor="@color/nova_on_primary"
+        app:contentInsetStartWithNavigation="12dp"
+        app:contentInsetStart="12dp"/>
 
-    <!-- This TextView will display the recognition/detection results -->
+    <!-- Watermark (subtle) -->
+    <TextView
+        android:id="@+id/watermark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="64sp"
+        android:textStyle="bold"
+        android:textColor="#13000000"
+        android:rotation="-24"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"/>
+
+    <!-- Tiny status line under toolbar -->
     <TextView
         android:id="@+id/resultTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:text="Speak to see your text appear here..."
-        android:textSize="20sp"
-        android:background="#80000000"
-        android:textColor="@android:color/white"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="64dp"
+        android:text="Ready"
+        android:textSize="12sp"
+        android:textColor="@color/nova_on_surface"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Chat list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginBottom="96dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <!-- Composer (rounded capsule) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/composer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="22dp"
+        app:cardUseCompatPadding="true"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/inputEditText"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="@string/message_hint"
+                android:background="@android:color/transparent"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="4"
+                android:imeOptions="actionSend"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/sendButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                android:contentDescription="@string/send"
+                android:src="@android:drawable/ic_menu_send"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                app:tint="@color/nova_primary"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ===== Vision Mode overlay (full screen) ===== -->
+    <FrameLayout
+        android:id="@+id/visionOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6FFFFFF"
+        android:visibility="gone">
+
+        <!-- Camera preview -->
+        <androidx.camera.view.PreviewView
+            android:id="@+id/viewFinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- Detection chip -->
+        <LinearLayout
+            android:id="@+id/detectChip"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_chip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:elevation="8dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/detectEmoji"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:text="👀"
+                android:textSize="18sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/detectText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/nova_chip_text"
+                android:text="I see something"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <!-- Close Vision -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/closeVision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/close"
+            app:backgroundTint="@color/nova_primary"
+            app:tint="@color/nova_on_primary"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

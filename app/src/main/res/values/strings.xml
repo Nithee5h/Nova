@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NOVA</string>
+    <string name="camera">Camera</string>
+    <string name="close">Close</string>
+    <string name="send">Send</string>
+    <string name="message_hint">Message Nova</string>
 </resources>

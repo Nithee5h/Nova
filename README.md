@@ -44,7 +44,7 @@ Think of it as a **ChatGPT-style experience** + **computer vision awareness** �
 ## 🏗️ Architecture
 
 <p align="center">
-  <img src="docs/nova_architecture.jpeg" alt="Architecture Diagram" width="600"/>
+  <img src="docs/NOVA_architecture.jpeg" alt="Architecture Diagram" width="600"/>
 </p>
 
 **Data Flow:**

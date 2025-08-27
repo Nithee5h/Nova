@@ -1,3 +1,13 @@
+#  Samsung EnnovateX 2025 AI Challenge Submission  
+
+- **Problem Statement** – #2 Building the Untethered, Always-On AI Companion 
+- **Team name** – IdeaFlow  
+- **Team members (Names)** – Nitheeswaran M, Sree Ram Roshan A S  
+- **Demo Video Link** – [YouTube Link](https://youtu.be/JQ_UYD9q5aM?si=h1Um2VMUCo4pI-Dj)
+
+---
+
+
 # NOVA – Offline AI Companion with Vision & Voice
 
 <p align="center">

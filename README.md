@@ -1,7 +1,7 @@
 # NOVA â€“ Offline AI Companion with Vision & Voice
 
 <p align="center">
-  <img src="docs/nova_logo.png" alt="NOVA Logo" width="120"/>
+  <img src="docs/nova_logo.jpeg" alt="NOVA Logo" width="120"/>
 </p>
 
 <p align="center">
@@ -35,8 +35,8 @@ Think of it as a **ChatGPT-style experience** + **computer vision awareness** â€
 - **Material Design**: app bar, watermark branding, chat bubbles  
 
 <p align="center">
-  <img src="docs/screenshot_chat.png" alt="Chat UI" width="250"/>
-  <img src="docs/screenshot_vision.png" alt="Vision Mode" width="250"/>
+  <img src="docs/screenshot_chat.jpeg" alt="Chat UI" width="250"/>
+  <img src="docs/screenshot_vision.jpeg" alt="Vision Mode" width="250"/>
 </p>
 
 ---
@@ -44,7 +44,7 @@ Think of it as a **ChatGPT-style experience** + **computer vision awareness** â€
 ## ğŸ—ï¸ Architecture
 
 <p align="center">
-  <img src="docs/nova_architecture.png" alt="Architecture Diagram" width="600"/>
+  <img src="docs/nova_architecture.jpeg" alt="Architecture Diagram" width="600"/>
 </p>
 
 **Data Flow:**

